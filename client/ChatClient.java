@@ -15,7 +15,8 @@ import java.io.*;
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Lagani&egrave;
  * @author Fran&ccedil;ois B&eacute;langer
- * @version July 2000
+ * @author Matteo gauthier
+ * @version November 2022
  */
 public class ChatClient extends AbstractClient
 {
@@ -90,5 +91,30 @@ public class ChatClient extends AbstractClient
     catch(IOException e) {}
     System.exit(0);
   }
+  
+  /**
+   * @Override
+   * Method called after the connection has been closed.
+   */
+  protected void connectionClosed()
+  {
+	clientUI.display("Server terminated.  Terminating client.");
+	quit();
+  }
+  
+  /**
+   * @Override
+   * Method called after the connection has been closed.
+   * 
+   * @param exception the exception raised.
+   */
+  protected void connectionException(Exception exception)
+  {
+	clientUI.display(
+	  "Client error:\n" + exception);
+	clientUI.display("Terminating client.");
+	quit();
+  }
+  
 }
 //End of ChatClient class
