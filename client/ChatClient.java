@@ -67,9 +67,91 @@ public class ChatClient extends AbstractClient
    */
   public void handleMessageFromClientUI(String message)
   {
-    try
+	
+	try
     {
-      sendToServer(message);
+	  if (message == "" || message.charAt(0) != '#')
+	  {
+		sendToServer(message);
+        return;
+      }
+      
+      //custom commands
+      String[] commandArgs = message.split(" ");
+      switch (commandArgs[0])
+      {
+      
+      case "#quit":
+        quit();
+        break;
+        
+      case "#logoff":
+        closeConnection();
+        break;
+        
+      case "#sethost":
+        if (isConnected())
+        {
+          clientUI.display("Error: Can't set host while "
+        		+ "already connected.");
+          break;
+        }
+        String host;
+        try
+        {
+          host = commandArgs[1];
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+          clientUI.display("Error: Missing argument.");
+          break;
+        }
+        setHost(host);
+        break;
+        
+      case "#setport":
+        if (isConnected())
+        {
+          clientUI.display("Error: Can't set port while "
+        	  + "already connected.");
+          break;
+        }
+        int port;
+        try
+        {
+          port = Integer.parseInt(commandArgs[1]);
+        }
+        catch(ArrayIndexOutOfBoundsException | NumberFormatException e)
+        {
+          clientUI.display("Error: Wrong or missing argument.");
+          break;
+        }
+        setPort(port);
+        break;
+          
+      case "#login":
+        if (isConnected())
+        {
+          clientUI.display("Error: Already logged in.");
+          break;
+        }
+        openConnection();
+        break;
+        
+      case "#gethost":
+        clientUI.display(getHost());
+        break;
+          
+      case "#getport":
+        clientUI.display(Integer.toString(getPort()));
+        break;
+        
+      default:
+        clientUI.display("Error: " + commandArgs[0] +
+        		  " is not a valid argument.");
+          
+      }
+
     }
     catch(IOException e)
     {
@@ -90,30 +172,6 @@ public class ChatClient extends AbstractClient
     }
     catch(IOException e) {}
     System.exit(0);
-  }
-  
-  /**
-   * @Override
-   * Method called after the connection has been closed.
-   */
-  protected void connectionClosed()
-  {
-	clientUI.display("Server terminated.  Terminating client.");
-	quit();
-  }
-  
-  /**
-   * @Override
-   * Method called after the connection has been closed.
-   * 
-   * @param exception the exception raised.
-   */
-  protected void connectionException(Exception exception)
-  {
-	clientUI.display(
-	  "Client error:\n" + exception);
-	clientUI.display("Terminating client.");
-	quit();
   }
   
 }

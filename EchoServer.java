@@ -13,7 +13,8 @@ import ocsf.server.*;
  * @author Dr Robert Lagani&egrave;re
  * @author Fran&ccedil;ois B&eacute;langer
  * @author Paul Holden
- * @version July 2000
+ * @author Matteo gauthier
+ * @version November 2022
  */
 public class EchoServer extends AbstractServer 
 {

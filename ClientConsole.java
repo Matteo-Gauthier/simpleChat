@@ -85,8 +85,10 @@ public class ClientConsole implements ChatIF
 
       while (true) 
       {
+    	
         message = fromConsole.nextLine();
         client.handleMessageFromClientUI(message);
+        
       }
     } 
     catch (Exception ex) 
@@ -118,7 +120,7 @@ public class ClientConsole implements ChatIF
   public static void main(String[] args) 
   {
     String host = "";
-    int port = DEFAULT_PORT;
+    int port;
 
     try
     {
