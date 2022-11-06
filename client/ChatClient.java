@@ -181,5 +181,20 @@ public class ChatClient extends AbstractClient
     System.exit(0);
   }
   
+  /**
+   * Called after a connection has been established.
+   */
+  protected void connectionEstablished() {
+	try
+    {
+	  sendToServer("#login " + loginID);
+    }
+    catch(IOException e) {
+      clientUI.display
+        ("Could not login.  Terminating client.");
+      quit();
+    }
+  }
+  
 }
 //End of ChatClient class
