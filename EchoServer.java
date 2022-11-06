@@ -39,7 +39,7 @@ public class EchoServer extends AbstractServer
    * The interface type variable.  It allows the implementation of 
    * the display method in the server.
    */
-  ChatIF serverUI; 
+  ChatIF serverUI;
   
   //Constructors ****************************************************
   
@@ -56,7 +56,6 @@ public class EchoServer extends AbstractServer
     listen(); //Start listening for connections
 	
   }
-
   
   //Instance methods ************************************************
   
@@ -79,8 +78,74 @@ public class EchoServer extends AbstractServer
    * @param message The message from the UI.    
    */
   public void handleMessageFromServerUI(String message) {
-	sendToAllClients(SERVER_MSG + message);
-	serverUI.display(SERVER_MSG + message);
+	
+	try
+    {
+	  if (message == "" || message.charAt(0) != '#')
+	  {
+		sendToAllClients(SERVER_MSG + message);
+		serverUI.display(SERVER_MSG + message);
+        return;
+      }
+      
+      //custom commands
+      String[] commandArgs = message.split(" ");
+      switch (commandArgs[0])
+      {
+      
+      case "#quit":
+    	close();
+    	System.exit(0);
+        break;
+        
+      case "#stop":
+    	stopListening();
+        break;
+        
+      case "#close":
+    	close();
+        break;
+        
+      case "#setport":
+        if (isListening() || getNumberOfClients() != 0)
+        {
+          serverUI.display("Error: Can't set port while open.");
+          break;
+        }
+        int port;
+        try
+        {
+          port = Integer.parseInt(commandArgs[1]);
+        }
+        catch(ArrayIndexOutOfBoundsException | NumberFormatException e)
+        {
+          serverUI.display("Error: Wrong or missing argument.");
+          break;
+        }
+        setPort(port);
+        break;
+        
+      case "#start":
+    	listen();
+        break;
+          
+      case "#getport":
+    	serverUI.display(Integer.toString(getPort()));
+        break;
+        
+      default:
+    	serverUI.display("Error: " + commandArgs[0] +
+        		  " is not a valid argument.");
+          
+      }
+
+    }
+    catch(IOException e)
+    {
+      serverUI.display
+        ("Could not send message.  Terminating server.");
+  	  System.exit(0);
+    }
   }
     
   /**
