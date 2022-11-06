@@ -182,6 +182,18 @@ public class ChatClient extends AbstractClient
   }
   
   /**
+   * Called each time an exception is thrown by the client's
+   * thread that is waiting for messages from the server.
+   * 
+   * @param exception
+   *            the exception raised.
+   */
+  protected void connectionException(Exception exception) {
+	clientUI.display("Server terminated.  Terminating client.");
+	quit();
+  }
+  
+  /**
    * Called after a connection has been established.
    */
   protected void connectionEstablished() {
@@ -190,8 +202,7 @@ public class ChatClient extends AbstractClient
 	  sendToServer("#login " + loginID);
     }
     catch(IOException e) {
-      clientUI.display
-        ("Could not login.  Terminating client.");
+      clientUI.display("Could not login.  Terminating client.");
       quit();
     }
   }
