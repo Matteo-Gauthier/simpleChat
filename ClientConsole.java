@@ -123,25 +123,25 @@ public class ClientConsole implements ChatIF
    */
   public static void main(String[] args) 
   {
-    String host = "";
-    int port = 0;
+    String host = ""; //host name
+    int port = 0; //Port to connect on
 
     try
     {
-      host = args[1];
+      host = args[1]; //Get host from command line
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
-      host = "localhost";
+      host = "localhost"; //Set host to "localhost"
     }
     
     try
     {
-      port = Integer.parseInt(args[2]);
+      port = Integer.parseInt(args[2]); //Get port from command line
     }
     catch(ArrayIndexOutOfBoundsException | NumberFormatException e)
     {
-      port = DEFAULT_PORT;
+      port = DEFAULT_PORT; //Set port to 5555
     }
     
     try

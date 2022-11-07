@@ -78,16 +78,17 @@ public class EchoServer extends AbstractServer
     }
 	
 	//#login case
-	if (client.getInfo("loginID") == null) { //Makes sure this is first message from client
+	if (client.getInfo("loginID") == null)
+	{ //Makes sure this is first message from client
 	  try
 	  {
-		client.setInfo("loginID", msgSplit[1]);
+		client.setInfo("loginID", msgSplit[1]); //saves loginID
 		return;
 	  }
 	  catch (ArrayIndexOutOfBoundsException e) {} //missing arg
 	}
 	try {
-	  client.close();
+	  client.close(); //Close client (reached if something went wrong)
 	} catch (IOException e1) {}
   }
   
@@ -100,6 +101,7 @@ public class EchoServer extends AbstractServer
 	
 	try
     {
+	  //Normal case
 	  if (message == "" || message.charAt(0) != '#')
 	  {
 		sendToAllClients(SERVER_MSG + message);
@@ -127,17 +129,17 @@ public class EchoServer extends AbstractServer
         
       case "#setport":
         if (isListening() || getNumberOfClients() != 0)
-        {
+        { //Error if server is currently open
           serverUI.display("Error: Can't set port while open.");
           break;
         }
         int port;
         try
         {
-          port = Integer.parseInt(commandArgs[1]);
+          port = Integer.parseInt(commandArgs[1]); //set port
         }
         catch(ArrayIndexOutOfBoundsException | NumberFormatException e)
-        {
+        { //Wrong or missing argument
           serverUI.display("Error: Wrong or missing argument.");
           break;
         }

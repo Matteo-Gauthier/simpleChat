@@ -77,6 +77,7 @@ public class ChatClient extends AbstractClient
 	
 	try
     {
+	  //Normal case
 	  if (message == "" || message.charAt(0) != '#')
 	  {
 		sendToServer(message);
@@ -98,7 +99,7 @@ public class ChatClient extends AbstractClient
         
       case "#sethost":
         if (isConnected())
-        {
+        { //Error if client is currently connected
           clientUI.display("Error: Can't set host while "
         		+ "already connected.");
           break;
@@ -109,7 +110,7 @@ public class ChatClient extends AbstractClient
           host = commandArgs[1];
         }
         catch(ArrayIndexOutOfBoundsException e)
-        {
+        { //Missing argument
           clientUI.display("Error: Missing argument.");
           break;
         }
@@ -118,7 +119,7 @@ public class ChatClient extends AbstractClient
         
       case "#setport":
         if (isConnected())
-        {
+        { //Error if client is currently connected
           clientUI.display("Error: Can't set port while "
         	  + "already connected.");
           break;
@@ -129,7 +130,7 @@ public class ChatClient extends AbstractClient
           port = Integer.parseInt(commandArgs[1]);
         }
         catch(ArrayIndexOutOfBoundsException | NumberFormatException e)
-        {
+        { //Wrong or missing argument
           clientUI.display("Error: Wrong or missing argument.");
           break;
         }
@@ -138,7 +139,7 @@ public class ChatClient extends AbstractClient
           
       case "#login":
         if (isConnected())
-        {
+        { //Error if client is currently connected
           clientUI.display("Error: Already logged in.");
           break;
         }
@@ -185,8 +186,7 @@ public class ChatClient extends AbstractClient
    * Called each time an exception is thrown by the client's
    * thread that is waiting for messages from the server.
    * 
-   * @param exception
-   *            the exception raised.
+   * @param exception the exception raised.
    */
   protected void connectionException(Exception exception) {
 	clientUI.display("Server terminated.  Terminating client.");
